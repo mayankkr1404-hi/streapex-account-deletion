@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#244d36">
+  <style>
+    :root { --green:#6fa84f; --dark:#244d36; --ink:#203329; --muted:#66766b; --bg:#f4f7f1; --line:#dce6d8; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--ink); background:radial-gradient(circle at top right,#e4efdf 0,transparent 38%),var(--bg); }
+    .wrap { width:min(900px,92%); margin:0 auto; padding:34px 0 54px; }
+    header { display:flex; align-items:center; gap:12px; margin-bottom:32px; }
+    .logo { width:46px;height:46px;flex:0 0 46px;border-radius:15px;object-fit:cover;display:block;box-shadow:0 8px 20px #244d3620; }
+    .brand { font-weight:800;font-size:19px;letter-spacing:-.4px; }
+    .brand small { display:block;color:var(--muted);font-size:12px;font-weight:500;letter-spacing:.2px;margin-top:2px; }
+    .hero { margin-bottom:24px; }
+    .eyebrow { color:#4e7d35;text-transform:uppercase;letter-spacing:1.8px;font-size:11px;font-weight:800; }
+    h1 { font-size:clamp(30px,5vw,45px);line-height:1.1;letter-spacing:-1.5px;margin:10px 0 12px;color:#203d2b; }
+    .intro { color:var(--muted);font-size:16px;line-height:1.7;max-width:680px;margin:0; }
+    .grid { display:grid;grid-template-columns:1fr 1.15fr;gap:20px;align-items:start; }
+    .panel { background:#fff;border:1px solid var(--line);border-radius:22px;padding:25px;box-shadow:0 14px 35px #2033290a; }
+    h2 { font-size:18px;margin:0 0 13px;letter-spacing:-.3px; }
+    .steps { padding:0;margin:0;list-style:none; }
+    .steps li { display:flex;gap:12px;margin:16px 0;color:var(--muted);font-size:14px;line-height:1.55; }
+    .num { flex:0 0 27px;height:27px;border-radius:9px;background:#e4efdf;color:#315a2c;display:grid;place-items:center;font-weight:800;font-size:12px; }
+    .notice { background:#f8faf6;border:1px solid var(--line);border-radius:13px;padding:13px 14px;color:#536456;font-size:12px;line-height:1.6;margin-top:18px; }
+    label { display:block;font-size:13px;font-weight:700;margin:15px 0 7px; }
+    input,textarea { width:100%;border:1px solid #cfdccc;border-radius:11px;padding:12px 13px;font:inherit;font-size:14px;color:var(--ink);background:#fff;outline:none; }
+    input:focus,textarea:focus { border-color:var(--green);box-shadow:0 0 0 3px #6fa84f20; }
+    textarea { resize:vertical;min-height:82px; }
+    .hint { font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5; }
+    .check { display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.55;color:var(--muted);margin:17px 0; }
+    .check input { width:16px;height:16px;margin:2px 0 0;flex:0 0 auto;accent-color:var(--green); }
+    button { width:100%;border:0;border-radius:12px;padding:14px 16px;background:var(--dark);color:#fff;font:inherit;font-weight:750;cursor:pointer;transition:transform .15s,opacity .15s; }
+    button:hover { transform:translateY(-1px); } button:disabled { opacity:.6;cursor:wait;transform:none; }
+    #status { display:none;margin-top:14px;border-radius:12px;padding:13px;font-size:13px;line-height:1.5; }
+    #status.ok { display:block;background:#edf7e9;color:#28562d;border:1px solid #cfe6c5; }
+    #status.err { display:block;background:#fff0ed;color:#8a2f21;border:1px solid #f2c9c0; }
+    footer { margin-top:24px;text-align:center;font-size:12px;color:var(--muted);line-height:1.7; }
+    footer a { color:#315a2c; }
+    .hp { position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden; }
+    @media(max-width:700px) { .wrap{padding-top:22px}.grid{grid-template-columns:1fr}.panel{padding:20px}.hero{margin-bottom:20px} }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <img class="logo" src="data:image/jpeg;base64,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" alt="StreApex logo">
+      <div class="brand">StreApex<small>by StreApex</small></div>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">Privacy & account control</div>
+      <h1>Request account deletion</h1>
+      <p class="intro">Uninstalled StreApex? You can still request deletion of your account and associated data here. You do not need to reinstall the app.</p>
+    </section>
+
+    <div class="grid">
+      <section class="panel">
+        <h2>What happens next?</h2>
+        <ol class="steps">
+          <li><span class="num">1</span><span>Submit the email address associated with your StreApex account.</span></li>
+          <li><span class="num">2</span><span>Your email app opens with your request prepared; send the email so support can review it.</span></li>
+          <li><span class="num">3</span><span>Support verifies account ownership, then deletes the account and associated data according to the deletion process.</span></li>
+        </ol>
+        <div class="notice"><strong>Important:</strong> Submitting this form records a request; it does not instantly delete your account. Do not enter your password, verification code, or payment details here. Your request is not received until you send the prepared email. Do not enter your password, verification code, or payment details here.</div>
+      </section>
+
+      <section class="panel">
+        <h2>Deletion request form</h2>
+        <form name="deletion-request">
+          <p class="hp"><label>Do not fill this out: <input name="bot-field"></label></p>
+          <label for="email">Account email address *</label>
+          <input id="email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required>
+          <div class="hint">Use the email address you used to register or sign in to StreApex.</div>
+
+          <label for="displayName">Name (optional)</label>
+          <input id="displayName" name="displayName" type="text" maxlength="120" autocomplete="name" placeholder="Your name">
+
+          <label for="uid">Firebase user ID / UID (optional)</label>
+          <input id="uid" name="uid" type="text" maxlength="128" placeholder="Only if you already know it">
+          <div class="hint">You can leave this blank. Never share your password or one-time code.</div>
+
+          <label for="reason">Additional details (optional)</label>
+          <textarea id="reason" name="reason" maxlength="1000" placeholder="Anything support should know"></textarea>
+
+          <div class="hp" aria-hidden="true">
+            <label for="website">Leave this field empty</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <label class="check"><input id="confirm" name="confirm" type="checkbox" value="yes" required><span>I request deletion of my StreApex account and the personal data associated with it. I understand support may contact me to verify account ownership before deletion is completed.</span></label>
+          <button id="submitBtn" type="submit">Submit deletion request</button>
+          <div id="status" role="status" aria-live="polite"></div>
+        </form>
+      </section>
+    </div>
+
+    <footer>
+      Requests are reviewed before deletion to protect account owners. Data required to be retained for legitimate legal or security reasons may be retained as explained in the applicable privacy policy.<br>
+      <span>StreApex · Account deletion requests</span>
+    </footer>
+  </main>
+
+  <script>
+    // Front-end-only fallback for GitHub Pages: opens the visitor's email app.
+    // A server-side backend can replace this handler in a later update.
+    document.querySelector('form[name="deletion-request"]').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const displayName = document.getElementById('displayName').value.trim();
+      const uid = document.getElementById('uid').value.trim();
+      const reason = document.getElementById('reason').value.trim();
+      if (!document.getElementById('confirm').checked) return;
+      const subject = 'StreApex account deletion request';
+      const body = [
+        'I request deletion of my StreApex account and associated personal data.', '',
+        'Account email: ' + email,
+        'Name: ' + (displayName || 'Not provided'),
+        'Firebase UID: ' + (uid || 'Not provided'),
+        'Additional details: ' + (reason || 'None'), '',
+        'I understand support may contact me to verify ownership.'
+      ].join('\n');
+      document.getElementById('status').textContent = 'Your email app should open with the request prepared. Please send the email to complete your request. If it does not open, email streapex14@gmail.com directly.';
+      window.location.href = 'mailto:streapex14@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    });
+  </script>
+</body>
+</html>
